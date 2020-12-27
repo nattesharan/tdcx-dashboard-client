@@ -1,0 +1,42 @@
+.create-task-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.create-task-container {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 12px;
+    opacity: 1;
+    padding: 1rem;
+}
+
+.create-task-form-label {
+    color: #537178;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.create-task-container input {
+    background: #EEF1F8 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    color: #7A7D7E;
+    outline: none;
+    border: none;
+}
+
+.create-task-submit-button {
+    background: #5285EC 0% 0% no-repeat padding-box;
+    border-radius: 8px !important;
+    border-color: #5285EC !important;
+    font-size: 14px !important;
+    padding: 0.6rem !important;
+}
