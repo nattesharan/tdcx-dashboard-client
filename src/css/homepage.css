@@ -208,7 +208,8 @@
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000014;
     border-radius: 12px;
-    margin: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 .tasks-table tr:not(:last-child) {
