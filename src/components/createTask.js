@@ -2,7 +2,7 @@ import '../css/createTasks.css';
 import PropTypes from 'prop-types';
 import { createRef, useEffect, useState } from 'react';
 import { API } from '../utils/axios';
-
+import { getToken } from '../utils/tokenUtils';
 export default function CreateTask({setShowCreateModal, setFetchTasks}) {
     const [taskName, setTaskName] = useState();
     const [errors, setErrors] = useState({});
@@ -33,7 +33,11 @@ export default function CreateTask({setShowCreateModal, setFetchTasks}) {
     }
 
     const createTask = (payload) => {
-        API.post('/tasks', payload).then(res => {
+        API.post('/tasks', payload, {
+            headers: {
+                'x-access-token': getToken()
+            }
+        }).then(res => {
             setShowCreateModal(false);
             setFetchTasks(true);
         }).catch(function(err) {
