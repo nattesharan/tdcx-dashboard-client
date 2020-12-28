@@ -203,7 +203,7 @@ export default function Home(props) {
                                 <label className="tasks-label">Tasks</label>
                             </div>
                             <div className="row col-md-10 col-lg-7 col-sm-12 m-0">
-                                <div className="col-md-8 col-lg-8 col-sm-12 m-sm-2 m-2 m-lg-0 m-md-0">
+                                <div className="col-md-8 col-lg-8 col-sm-12 m-sm-2 m-2 m-lg-0 m-md-0 p-sm-0">
                                     <form className="search-task-form" onSubmit={searchTasks}>
                                         <div className="input-group">
                                             <span className="input-group-addon p-2 ml-1 mr-1"><i className="fa fa-search" aria-hidden="true"></i></span>
@@ -218,7 +218,7 @@ export default function Home(props) {
                                     <button type="submit" className="col-md-12 create-task-button btn btn-primary" onClick={showTaskCreationModal}>Create Task</button>
                                 </div>
                             </div>
-                            <div className="row col-md-12 mt-4 tasks-table-container p-4 mb-4">
+                            <div className="row col-md-12 mt-4 tasks-table-container p-4 mb-4 table-responsive-sm">
                                 {
                                     tasks.length ?
                                         <table className="table table-borderless tasks-table m-0">

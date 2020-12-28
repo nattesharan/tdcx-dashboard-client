@@ -48,24 +48,24 @@ export default function TaskRow({task, fetchOverView, setFetchTasks, setSelected
     }
 
     return (
-        <tr className="row col-12">
-            <td className="col-1">
+        <tr className="d-flex">
+            <td className="col-2 col-lg-1">
                 <label className="customcheck">
                     <input type="checkbox" checked={taskCompleted} onChange={handleCheckbox} disabled={updating}/>
                     <span className="checkmark"></span>
                 </label>
             </td>
             <td className={ 
-                "col-9 task-name " + 
+                "col-6 col-lg-9 task-name " + 
                 (taskCompleted ? "task-name-completed" : "task-name-incomplete")}>
                     {task.name}
             </td>
-            <td className="col-1">
+            <td className="col-2 col-lg-1">
                 <button className="btn btn-default table-button" onClick={showTaskUpdateModal}>
                     <i className="fa fa-pencil table-button-icon" aria-hidden="true"></i>
                 </button>
             </td>
-            <td className="col-1">
+            <td className="col-2 col-lg-1">
                 <button className="btn btn-default table-button" onClick={deleteTask} disabled={updating}>
                     <i className="fa fa-trash table-button-icon" aria-hidden="true"></i>
                 </button>
