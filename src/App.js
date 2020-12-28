@@ -23,7 +23,11 @@ function App() {
             setUser({});
             return;
         }
-        API.get('/me').then(res => {
+        API.get('/me', {
+            headers: {
+                'x-access-token': getToken()
+            }
+        }).then(res => {
             setUser(res.data);
         }).catch(err => {
             setUser({});
