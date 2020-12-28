@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { API } from '../utils/axios';
+import { getToken } from "../utils/tokenUtils";
 
 export default function TaskRow({task, fetchOverView, setFetchTasks, setSelectedTask, setShowUpdateModal}) {
     const [taskCompleted, setTaskCompleted] = useState(task.is_completed);
@@ -11,6 +12,10 @@ export default function TaskRow({task, fetchOverView, setFetchTasks, setSelected
         let is_completed = !taskCompleted;
         API.put(`/tasks/${task._id}`, {
             is_completed: is_completed
+        }, {
+            headers: {
+                'x-access-token': getToken()
+            }
         }).then(res => {
             setUpdating(false);
             setTaskCompleted(is_completed);
@@ -24,7 +29,11 @@ export default function TaskRow({task, fetchOverView, setFetchTasks, setSelected
 
     const deleteTask = () => {
         setUpdating(true);
-        API.delete(`/tasks/${task._id}`).then(res => {
+        API.delete(`/tasks/${task._id}`, {
+            headers: {
+                'x-access-token': getToken()
+            }
+        }).then(res => {
             setUpdating(false);
             setFetchTasks(true);
         }).catch(function(err) {

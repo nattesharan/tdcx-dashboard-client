@@ -7,6 +7,8 @@ import '../css/homepage.css';
 import { API } from '../utils/axios';
 import {CanvasJSChart} from 'canvasjs-react-charts';
 import UpdateTask from "./updateTask";
+import { getToken } from "../utils/tokenUtils";
+
 export default function Home(props) {
     const user = useContext(AppContext)
 
@@ -24,7 +26,11 @@ export default function Home(props) {
         if(searchTerm && searchTerm.length) {
             urlEndpoint += `?searchTerm=${searchTerm}`;
         }
-        API.get(urlEndpoint).then(res => {
+        API.get(urlEndpoint, {
+            headers: {
+                'x-access-token': getToken()
+            }
+        }).then(res => {
             setTasks(res.data);
         }).catch(function(err) {
             console.log("error occured while fehcing tasks...")
@@ -39,7 +45,11 @@ export default function Home(props) {
         }
     }
     const fetchOverView = () => {
-        API.get('/overview').then(res => {
+        API.get('/overview', {
+            headers: {
+                'x-access-token': getToken()
+            }
+        }).then(res => {
             setOverViewData(res.data);
         })
     }
