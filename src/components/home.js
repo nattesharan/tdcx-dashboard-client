@@ -11,7 +11,7 @@ import { getToken } from "../utils/tokenUtils";
 
 export default function Home(props) {
     const user = useContext(AppContext)
-
+    console.log(user);
     const [tasks, setTasks] = useState([]);
     const [overviewData, setOverViewData] = useState({});
     const [fetchTasks, setFetchTasks] = useState(true);
