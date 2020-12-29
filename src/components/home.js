@@ -31,6 +31,7 @@ export default function Home(props) {
                 'x-access-token': getToken()
             }
         }).then(res => {
+            console.log(res.data);
             setTasks(res.data);
         }).catch(function(err) {
             console.log("error occured while fehcing tasks...")
@@ -174,7 +175,7 @@ export default function Home(props) {
     const renderTableRows = () => {
         return tasks.map((task, index) => {
             return (
-                <TaskRow task={task} key={index} fetchOverView={fetchOverView} setFetchTasks={setFetchTasks} setSelectedTask={setSelectedTask} setShowUpdateModal={setShowUpdateModal}/>
+                <TaskRow task={task} key={task._id} fetchOverView={fetchOverView} setFetchTasks={setFetchTasks} setSelectedTask={setSelectedTask} setShowUpdateModal={setShowUpdateModal}/>
             )
         })
     }
