@@ -38,6 +38,6 @@ test('submit login form with invalid credentials', async () => {
   expect(passwordInput.value).toBe('test');
   const submitBtn = screen.getByText('Submit');
   fireEvent.click(submitBtn);
-  const loginFailedLabel = await waitFor(() => screen.getByText('Please enter valid credentials.'));
+  const loginFailedLabel = await waitFor(() => screen.getByText('Please enter valid credentials.'), { interval: 10, timeout: 50});
   expect(loginFailedLabel).toBeInTheDocument();
 });
