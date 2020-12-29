@@ -11,7 +11,6 @@ import { getToken } from "../utils/tokenUtils";
 
 export default function Home(props) {
     const user = useContext(AppContext)
-    console.log(user);
     const [tasks, setTasks] = useState([]);
     const [overviewData, setOverViewData] = useState({});
     const [fetchTasks, setFetchTasks] = useState(true);
@@ -19,6 +18,7 @@ export default function Home(props) {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
     const [searchTerm, setSearchTerm] = useState();
+    const [searchActive, setSearchActive] = useState(false);
 
       
     const fetchAvailableTasks = (searchTerm) => {
@@ -31,8 +31,8 @@ export default function Home(props) {
                 'x-access-token': getToken()
             }
         }).then(res => {
-            console.log(res.data);
-            setTasks(res.data);
+            setSearchActive(res.data.searchActive);
+            setTasks(res.data.tasks);
         }).catch(function(err) {
             console.log("error occured while fehcing tasks...")
             console.log(err.response.data);
@@ -41,7 +41,7 @@ export default function Home(props) {
     
     const searchTasks = (e) => {
         e.preventDefault();
-        if(searchTerm && searchTerm.length) {
+        if((searchTerm && searchTerm.length) || searchActive) {
             fetchAvailableTasks(searchTerm);
         }
     }
@@ -192,7 +192,7 @@ export default function Home(props) {
 
 
     const renderTasksUI = () => {
-        if(tasks.length || (searchTerm && searchTerm.length)) {
+        if(tasks.length || (searchTerm && searchTerm.length) || searchActive) {
             return (
                 <section>
                     {getTaskCreationUI()}
