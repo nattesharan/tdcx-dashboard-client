@@ -4,10 +4,9 @@ import { removeToken } from '../utils/tokenUtils';
 import CreateTask from './createTask';
 import TaskRow from "./taskRow";
 import '../css/homepage.css';
-import { API } from '../utils/axios';
 import {CanvasJSChart} from 'canvasjs-react-charts';
 import UpdateTask from "./updateTask";
-import { getToken } from "../utils/tokenUtils";
+import { callFetchTasksAPI, callOverViewAPI } from '../utils/api_factory';
 
 export default function Home(props) {
     const user = useContext(AppContext)
@@ -26,11 +25,7 @@ export default function Home(props) {
         if(searchTerm && searchTerm.length) {
             urlEndpoint += `?searchTerm=${searchTerm}`;
         }
-        API.get(urlEndpoint, {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        callFetchTasksAPI(urlEndpoint).then(res => {
             setSearchActive(res.data.searchActive);
             setTasks(res.data.tasks);
         }).catch(function(err) {
@@ -46,11 +41,7 @@ export default function Home(props) {
         }
     }
     const fetchOverView = () => {
-        API.get('/overview', {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        callOverViewAPI().then(res => {
             setOverViewData(res.data);
         })
     }

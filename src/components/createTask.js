@@ -1,8 +1,7 @@
 import '../css/createTasks.css';
 import PropTypes from 'prop-types';
 import { createRef, useEffect, useState } from 'react';
-import { API } from '../utils/axios';
-import { getToken } from '../utils/tokenUtils';
+import { callCreateTaskAPI } from '../utils/api_factory';
 export default function CreateTask({setShowCreateModal, setFetchTasks}) {
     const [taskName, setTaskName] = useState();
     const [errors, setErrors] = useState({});
@@ -32,12 +31,8 @@ export default function CreateTask({setShowCreateModal, setFetchTasks}) {
         return isFormValid;
     }
 
-    const createTask = (payload) => {
-        API.post('/tasks', payload, {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+    const createTask = async (payload) => {
+        await callCreateTaskAPI(payload).then(res => {
             setShowCreateModal(false);
             setFetchTasks(true);
         }).catch(function(err) {

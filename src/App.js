@@ -10,7 +10,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import PublicRoute from './utils/publicRoute';
 import PrivateRoute from "./utils/privateRoute";
 import { getToken, removeToken } from "./utils/tokenUtils";
-import { API } from './utils/axios';
+import { getProfile } from './utils/api_factory';
 import React from 'react';
 
 export const AppContext = React.createContext();
@@ -23,11 +23,7 @@ function App() {
             setUser({});
             return;
         }
-        API.get('/me', {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        getProfile().then(res => {
             setUser(res.data);
         }).catch(err => {
             setUser({});

@@ -1,8 +1,7 @@
 import '../css/createTasks.css';
 import PropTypes from 'prop-types';
 import { createRef, useEffect, useState } from 'react';
-import { API } from '../utils/axios';
-import { getToken } from "../utils/tokenUtils";
+import { callUpdateAPI } from "../utils/api_factory";
 export default function UpdateTask({task, setShowUpdateModal, setFetchTasks, setSelectedTask}) {
     const [taskName, setTaskName] = useState(task.name);
     const [errors, setErrors] = useState({});
@@ -34,11 +33,7 @@ export default function UpdateTask({task, setShowUpdateModal, setFetchTasks, set
     }
 
     const updateTask = (payload) => {
-        API.put(`/tasks/${task._id}`, payload, {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        callUpdateAPI(payload, task._id).then(res => {
             setShowUpdateModal(false);
             setSelectedTask(null);
             setFetchTasks(true);

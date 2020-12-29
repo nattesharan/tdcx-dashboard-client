@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { API } from '../utils/axios';
-import { getToken } from "../utils/tokenUtils";
-
+import { callUpdateAPI, callDeleteAPI } from "../utils/api_factory";
 export default function TaskRow({task, fetchOverView, setFetchTasks, setSelectedTask, setShowUpdateModal}) {
     const [taskCompleted, setTaskCompleted] = useState(task.is_completed);
     const [updating, setUpdating] = useState(false);
@@ -10,13 +8,9 @@ export default function TaskRow({task, fetchOverView, setFetchTasks, setSelected
     const handleCheckbox = () => {
         setUpdating(true);
         let is_completed = !taskCompleted;
-        API.put(`/tasks/${task._id}`, {
+        callUpdateAPI({
             is_completed: is_completed
-        }, {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        }, task._id).then(res => {
             setUpdating(false);
             setTaskCompleted(is_completed);
             fetchOverView();
@@ -29,11 +23,7 @@ export default function TaskRow({task, fetchOverView, setFetchTasks, setSelected
 
     const deleteTask = () => {
         setUpdating(true);
-        API.delete(`/tasks/${task._id}`, {
-            headers: {
-                'x-access-token': getToken()
-            }
-        }).then(res => {
+        callDeleteAPI(task._id).then(res => {
             setUpdating(false);
             setFetchTasks(true);
         }).catch(function(err) {

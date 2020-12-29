@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import PropTypes from 'prop-types';
 import '../css/login.css';
-import { API } from "../utils/axios";
+import { loginUser } from '../utils/api_factory';
 import { saveToken } from '../utils/tokenUtils';
 
 export default function Login(props) {
@@ -30,7 +30,7 @@ export default function Login(props) {
     };
 
     async function login(credentials) {
-        return API.post('/login', credentials).then(res => {
+        return await loginUser(credentials).then(res => {
             return res.data
         })
     }
@@ -51,10 +51,7 @@ export default function Login(props) {
                 saveToken(response.token);
                 props.history.push('/');
             }
-        } else {
-            console.log("form is invalid...");
         }
-
     };
     return(
         <div className="login-wrapper">
