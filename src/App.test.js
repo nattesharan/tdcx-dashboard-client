@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
+
 test('render initial screen', () => {
   render(<App/>)
   const loginLabel = screen.getByText('Login')
@@ -40,4 +41,20 @@ test('submit login form with invalid credentials', async () => {
   fireEvent.click(submitBtn);
   const loginFailedLabel = await waitFor(() => screen.getByText('Please enter valid credentials.'), { interval: 10, timeout: 50});
   expect(loginFailedLabel).toBeInTheDocument();
+});
+
+test('submit login form with valid credentials', async () => {
+  render(<App/>)
+  const userNameInput = screen.getByPlaceholderText('Username');
+  expect(userNameInput).toHaveAttribute('type', 'text');
+  fireEvent.change(userNameInput, {'target': { 'value': 'test' }})
+  expect(userNameInput.value).toBe('test');
+  const passwordInput = screen.getByPlaceholderText('Password');
+  expect(passwordInput).toHaveAttribute('type', 'password');
+  fireEvent.change(passwordInput, {'target': { 'value': 'test123' }});
+  expect(passwordInput.value).toBe('test123');
+  const submitBtn = screen.getByText('Submit');
+  fireEvent.click(submitBtn);
+  const logout = await waitFor(() => screen.getByText('Logout'), { interval: 10, timeout: 50});
+  expect(logout).toBeInTheDocument();
 });
