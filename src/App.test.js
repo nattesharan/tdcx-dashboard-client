@@ -1,6 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import App from './App';
 
+afterEach(cleanup);
 test('render initial screen', () => {
   render(<App/>)
   const loginLabel = screen.getByText('Login')
