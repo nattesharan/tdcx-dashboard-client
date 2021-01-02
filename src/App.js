@@ -16,6 +16,7 @@ import React from 'react';
 export const AppContext = React.createContext();
 function App() {
     const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const token = getToken();
@@ -23,18 +24,21 @@ function App() {
             setUser({});
             return;
         }
+        setLoading(true);
         getProfile().then(res => {
+            setLoading(false);
             setUser(res.data);
         }).catch(err => {
-            setUser({});
+            setLoading(false);
             removeToken();
+            setUser({});
         });
     }, []);
     return (
         <section className="App">
             <BrowserRouter>
                 <Switch>
-                    <PublicRoute path="/login" component={Login} />
+                    <PublicRoute path="/login" component={props => <Login {...props} setUser={setUser} />}/>
                     <AppContext.Provider value={user}>
                         <PrivateRoute exact path="/" component={Home} />
                     </AppContext.Provider>
