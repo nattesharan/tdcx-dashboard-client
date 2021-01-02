@@ -34,6 +34,13 @@ function App() {
             setUser({});
         });
     }, []);
+    if(loading) {
+        return (
+            <section className="App">
+                <h1 className="loadingPage"><i class="fa fa-spinner fa-spin"></i></h1>
+            </section>
+        );
+    }
     return (
         <section className="App">
             <BrowserRouter>
