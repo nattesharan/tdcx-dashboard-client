@@ -11,14 +11,14 @@ function getHeaders() {
     }
 }
 
-export async function getProfile() {
-    return await API.get('/me', {
+export function getProfile() {
+    return API.get('/me', {
         headers: getHeaders()
     })
 }
 
-export async function callCreateTaskAPI(payload) {
-    return await API.post('/tasks', payload, {
+export function callCreateTaskAPI(payload) {
+    return API.post('/tasks', payload, {
         headers: getHeaders()
     })
 }

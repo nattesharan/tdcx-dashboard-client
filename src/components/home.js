@@ -17,7 +17,10 @@ export default function Home(props) {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
     const [searchTerm, setSearchTerm] = useState();
-    const [searchActive, setSearchActive] = useState(false);
+    const [searchActive, setSearchActive] = useState(false)
+    const [loadingTasksData, setLoadingTasksData] = useState(true);
+    const [loadingOverviewData, setLoadingOverviewData] = useState(true);
+    const [initialLoading, setInitialLoading] = useState(true);
 
       
     const fetchAvailableTasks = (searchTerm) => {
@@ -28,6 +31,7 @@ export default function Home(props) {
         callFetchTasksAPI(urlEndpoint).then(res => {
             setSearchActive(res.data.searchActive);
             setTasks(res.data.tasks);
+            setLoadingTasksData(false);
         }).catch(function(err) {
             console.log("error occured while fehcing tasks...")
             console.log(err.response.data);
@@ -43,15 +47,22 @@ export default function Home(props) {
     const fetchOverView = () => {
         callOverViewAPI().then(res => {
             setOverViewData(res.data);
+            setLoadingOverviewData(false);
         })
     }
     useEffect(() => {
         if(fetchTasks) {
+            if(initialLoading) {
+                setLoadingTasksData(true);
+                setLoadingOverviewData(true);
+            }
             fetchAvailableTasks();
             fetchOverView();
             setFetchTasks(false);
+            setInitialLoading(false);
         }
-    }, [fetchTasks])
+        return () => { setFetchTasks(false) };
+    }, [fetchTasks, initialLoading])
 
     const logoutUser = () => {
         removeToken();
@@ -121,7 +132,7 @@ export default function Home(props) {
     }
 
     const getOverViewUI = () => {
-        if(overviewData) {
+        if(!loadingOverviewData) {
             return (
                 <div className="row mt-4">
                     <div className="col-md-4 col-lg-4 col-sm-12 mb-3">
@@ -160,16 +171,47 @@ export default function Home(props) {
                 </div>
             );
         }
-        return null;
-    }
+        return (
+            <div className="row mt-4">
+                <div className="col-md-4 col-lg-4 col-sm-12 mb-3">
+                    <div className="card dashboard-card h-100 skeleton-loading">
+                        <div className="card-body">
+                            <h5 className="card-title overview-title skeleton-card-title">Tasks Completed</h5>
+                            <div className="card-content-wrapper">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-lg-4 col-sm-12 mb-3">
+                    <div className="card dashboard-card h-100 skeleton-loading">
+                        <div className="card-body">
+                            <h5 className="card-title overview-title skeleton-card-title">Latest Tasks</h5>
+                            <div className="card-content-wrapper" style={{ alignItems: 'flex-end' }}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4 col-lg-4 col-sm-12 mb-3">
+                    <div className="card dashboard-card h-100 skeleton-loading">
+                        <div className="card-body">
+                            <div className="card-content-wrapper">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
     const renderTableRows = () => {
+        console.log("render table rowsss......")
         return tasks.map((task, index) => {
             return (
                 <TaskRow task={task} key={task._id} fetchOverView={fetchOverView} setFetchTasks={setFetchTasks} setSelectedTask={setSelectedTask} setShowUpdateModal={setShowUpdateModal}/>
             )
         })
     }
+
     const shouldShowAlert = () => {
         if(showCreateModal) {
             return {
@@ -183,6 +225,45 @@ export default function Home(props) {
 
 
     const renderTasksUI = () => {
+        if(loadingTasksData) {
+            return (<section>
+                <section className="home-main container-fluid w-75">
+                    {getOverViewUI()}
+                    <div className="row mt-4 mt-sm-2 align-elements-middle">
+                        <div className="col-md-2 col-lg-5 col-sm-12 text-md-left text-lg-left text-center">
+                            
+                        </div>
+                        <div className="row col-md-10 col-lg-7 col-sm-12 m-0 skeleton-loading">
+                            <div className="col-md-8 col-lg-8 col-sm-12 m-sm-2 m-2 m-lg-0 m-md-0 p-sm-0">
+                                <form className="search-task-form" style={{ visibility: 'hidden' }}>
+                                    <div className="input-group">
+                                        <span className="input-group-addon p-2 ml-1 mr-1"><i className="fa fa-search" aria-hidden="true"></i></span>
+                                        <input type="text" className="form-control form-control-lg pl-1" placeholder="Search by task name"/>
+                                    </div>
+                                    <div>
+                                        <button type="submit" hidden></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="col-md-4 col-lg-4 col-sm-12 m-sm-2 m-2 m-lg-0 m-md-0" style={{ visibility: 'hidden' }}>
+                                <button type="submit" className="col-md-12 create-task-button btn btn-primary">Create Task</button>
+                            </div>
+                        </div>
+                        <div className="row col-md-12 mt-4 tasks-table-container p-4 mb-4 table-responsive-sm">
+                            <table className="table table-borderless tasks-table m-0">
+                                <tbody>
+                                    {
+                                        Array(5).fill().map((ele, index) => {
+                                            return (<tr key={index} className="d-flex skeleton-loading skeleton-loading-table-row p-5"></tr>)
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </section>);
+        }
         if(tasks.length || (searchTerm && searchTerm.length) || searchActive) {
             return (
                 <section>
