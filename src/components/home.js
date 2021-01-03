@@ -204,7 +204,6 @@ export default function Home(props) {
     };
 
     const renderTableRows = () => {
-        console.log("render table rowsss......")
         return tasks.map((task, index) => {
             return (
                 <TaskRow task={task} key={task._id} fetchOverView={fetchOverView} setFetchTasks={setFetchTasks} setSelectedTask={setSelectedTask} setShowUpdateModal={setShowUpdateModal}/>
