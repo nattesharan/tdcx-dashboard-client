@@ -5,6 +5,7 @@ import { loginUser } from '../utils/api_factory';
 import { saveToken } from '../utils/tokenUtils';
 
 export default function Login(props) {
+    console.log(props);
     const setUser = props.setUser;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
